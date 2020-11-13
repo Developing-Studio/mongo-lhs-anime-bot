@@ -16,20 +16,19 @@ bot = commands.Bot(
     help_command=commands.MinimalHelpCommand(),
 )
 
-bot.load_extension("jishaku")
-bot.load_extension("cogs.actions")
-bot.load_extension("cogs.administration")
-bot.load_extension("cogs.bell")
-bot.load_extension("cogs.bot")
-bot.load_extension("cogs.database")
-bot.load_extension("cogs.fun")
-bot.load_extension("cogs.logs")
-bot.load_extension("cogs.polls")
-bot.load_extension("cogs.roles")
-bot.load_extension("cogs.suggestions")
-bot.load_extension("cogs.welcome")
-
-
+exts = ['jishaku']
+for file in os.listdir('cogs'):
+    if file.endswith('.py'):
+        exts.append('cogs.'+file)
+        
+for ext in exts:
+    try:
+        bot.load_extension(ext)
+    except Exception as e:
+        print(ext)
+        print(e)
+        print()
+        
 @bot.event
 async def on_message(message):
     ctx = await bot.get_context(message)
